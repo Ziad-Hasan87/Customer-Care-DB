@@ -1,0 +1,98 @@
+html, body {
+  overflow-x: hidden;
+}
+body{
+    margin: 0;
+    padding: 0;
+}
+.containers{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100dvh;
+    width: 100%;
+}
+.table-container{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    height: 100dvh;
+    width: 100%;
+}
+.headings{
+    background-color: #008252;
+    padding: 20px;
+    color:white;
+    width: 30%;
+    text-align: center;
+    border-radius: 10px;
+}
+.labels{
+    display: inline-block;
+    margin: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+.forms{
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    background-color: lightgray;
+    padding: 20px;
+    border-radius: 10px;
+}
+.forms input,
+.forms select {
+  flex: 1;
+  padding: 5px;
+  font-size: 16px;
+}
+.buttons{
+    background-color: #008252;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+.selection{
+    margin:10px;
+    font-size: 18px;
+}
+table th {
+    background-color: #008252;
+    color: white;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+table {
+    border-collapse: collapse;
+    width: 90%;
+    text-align: center;
+}
+table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+.info-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: lightgray;
+    padding: 20px;
+    border-radius: 10px;
+    width: 30%;
+}
+.table-options{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}

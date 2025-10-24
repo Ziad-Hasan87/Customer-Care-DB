@@ -11,7 +11,7 @@ if (!$conn) { die("Connection Failed: " . mysqli_connect_error()); }
     <title>Feedback Monitor</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        .stars { color: gold; font-size: 1.2em; }
+        .stars { color: black; font-size: 1.2em; }
     </style>
 </head>
 <body>

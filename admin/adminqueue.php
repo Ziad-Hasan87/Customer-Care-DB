@@ -216,8 +216,8 @@ function renderFollowupTable($conn, $statuses){
 // Call function
 renderTable($conn,'waiting','Waiting',$statuses,false);
 renderTable($conn,'ongoing','Ongoing',$statuses,true);
-renderTable($conn,'complete','Complete',$statuses,false);
 renderFollowupTable($conn, $statuses);
+renderTable($conn,'complete','Complete',$statuses,false);
 
 
 mysqli_close($conn);

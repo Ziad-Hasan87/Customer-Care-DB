@@ -28,7 +28,7 @@ if (!$conn) { die("Connection Failed: " . mysqli_connect_error()); }
         <tbody>
         <?php
         // Fetch data directly from the view
-        $query = "SELECT * FROM employee_performance ORDER BY employeeid ASC";
+        $query = "SELECT * FROM employee_performance ORDER BY avg_rating DESC";
         $result = mysqli_query($conn, $query);
 
         if($result && mysqli_num_rows($result) > 0){

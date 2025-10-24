@@ -9,7 +9,8 @@ $pages = [
     'adminqueue' => 'adminqueue.php',
     'services' => 'services.php',
     'addservice' => 'addservice.php',
-    'performance' => 'performance.php'
+    'performance' => 'performance.php',
+    'employee' => 'employee.php'
 ];
 
 // Helper function to mark active nav link
@@ -46,6 +47,7 @@ function isActive($p) {
     <a href="?page=services" <?= isActive('services') ?>>Services</a>
     <a href="?page=addservice" <?= isActive('addservice') ?>>Add Services</a>
     <a href="?page=performance" <?= isActive('performance') ?>>Performance</a>
+    <a href="?page=employee" <?= isActive('employee') ?>>Employees</a>
 </nav>
 
 <div class="content">

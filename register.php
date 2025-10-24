@@ -43,7 +43,7 @@
                     }
                     echo "Registration Successful";
                     mysqli_close($conn);
-                    header("Location: welcome.php?email=" . urlencode($email));
+                    header("Location: login.php?email=" . urlencode($email));
                     exit();
                 }
             }

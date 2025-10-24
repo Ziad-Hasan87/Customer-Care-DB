@@ -1,89 +1,52 @@
-<?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-$conn = mysqli_connect('localhost', 'root', '', 'customercaredb', 3306);
-if (!$conn) {
-    die("Database connection failed: " . mysqli_connect_error());
-}
-
-// Handle form submission
-if (isset($_POST['submit'])) {
-    $employeeid = $_POST['employeeid'];
-    $name = $_POST['name'];
-    $role = $_POST['role'];
-    $email = $_POST['email'];
-    $phone = $_POST['phone'];
-
-    $stmt = $conn->prepare("INSERT INTO employee (employeeid, name, role, email, phone) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("issss", $employeeid, $name, $role, $email, $phone);
-
-    if ($stmt->execute()) {
-        echo "<script>alert('Employee added successfully'); window.location.href='employee.php';</script>";
-        exit();
-    } else {
-        echo "<p style='color:red;'>Error adding employee: " . htmlspecialchars($stmt->error) . "</p>";
-    }
-    $stmt->close();
-}
-
-// Always fetch after insert logic
-$result = $conn->query("SELECT * FROM employee");
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Employee Management</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; background: #f9f9f9; }
-        .containers { background: #fff; padding: 20px; margin: 20px auto; width: 90%; max-width: 600px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        .headings { text-align: center; color: #333; }
-        .forms div { margin-bottom: 15px; }
-        .labels { display: block; margin-bottom: 5px; font-weight: bold; }
-        .forms input, .forms select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
-        .buttons { display: block; width: 100%; background-color: #04AA6D; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; }
-        .buttons:hover { background-color: #038c5a; }
-        table { border-collapse: collapse; width: 90%; margin: 20px auto; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        th { background-color: #04AA6D; color: white; }
-        tr:nth-child(even) { background-color: #f2f2f2; }
-        .table-container { margin-top: 40px; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Employee</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="table-container">
-        <h2 class="headings">All Employees</h2>
-        <?php
-        if (!$result) {
-            echo "<p style='color:red; text-align:center;'>Error fetching employees: " . htmlspecialchars($conn->error) . "</p>";
-        } elseif ($result->num_rows === 0) {
-            echo "<p style='text-align:center;'>No employees found.</p>";
-        } else {
-            echo "<table>
-                    <thead>
-                        <tr>
-                            <th>Employee ID</th>
-                            <th>Name</th>
-                            <th>Role</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                        </tr>
-                    </thead>
-                    <tbody>";
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>
-                        <td>{$row['employeeid']}</td>
-                        <td>{$row['name']}</td>
-                        <td>{$row['role']}</td>
-                        <td>{$row['email']}</td>
-                        <td>{$row['phone']}</td>
-                      </tr>";
+    <?php
+        if (isset($_POST['submit'])) {
+            $employeeid = $_POST['employeeid'];
+            $name = $_POST['name'];
+            $role = $_POST['role'];
+            $email = $_POST['email'];
+            $phone = $_POST['phone'];
+
+            // Connect to database
+            $conn = mysqli_connect('localhost', 'root', '', 'customercaredb', 3306);
+            if (!$conn) {
+                echo "<script>alert('Connection Failed.');</script>";
+            } else {
+                // Basic validation
+                if (empty($employeeid) || empty($name) || empty($role) || empty($email) || empty($phone)) {
+                    echo "<script>alert('Please fill in all fields');</script>";
+                    die('Please fill in all fields');
+                }
+
+                // Prevent duplicate employeeid or email
+                $check = mysqli_query($conn, "SELECT * FROM employee WHERE employeeid='$employeeid' OR email='$email'");
+                if (mysqli_num_rows($check) > 0) {
+                    echo "<script>alert('Employee with this ID or Email already exists');</script>";
+                } else {
+                    $stmt = "INSERT INTO employee (employeeid, name, role, email, phone) 
+                             VALUES ('$employeeid', '$name', '$role', '$email', '$phone')";
+                    $execute = mysqli_query($conn, $stmt);
+                    if (!$execute) {
+                        echo "<script>alert('Failed to add employee');</script>";
+                        die('Error: ' . mysqli_error($conn));
+                    } else {
+                        echo "<script>alert('Employee added successfully');</script>";
+                    }
+                }
+
+                mysqli_close($conn);
             }
-            echo "</tbody></table>";
         }
-        ?>
-    </div>
+    ?>
+
     <div class="containers">
         <h2 class="headings">Add New Employee</h2>
         <form action="employee.php" method="POST" class="forms">
@@ -110,8 +73,5 @@ $result = $conn->query("SELECT * FROM employee");
             <button type="submit" class="buttons" name="submit">Add Employee</button>
         </form>
     </div>
-
-    
 </body>
 </html>
-<?php $conn->close(); ?>

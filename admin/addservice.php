@@ -1,4 +1,3 @@
-<!-- addService.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +5,6 @@
     <title>Add New Service</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Simple toast notification styling */
         #toast {
             visibility: hidden;
             min-width: 250px;
@@ -56,7 +54,6 @@
 
     </div>
 
-    <!-- Toast container -->
     <div id="toast"></div>
 
     <?php
@@ -92,7 +89,7 @@
         function showToast(message, isError=false) {
             const toast = document.getElementById("toast");
             toast.textContent = message;
-            toast.style.backgroundColor = isError ? "#e74c3c" : "#27ae60"; // red for error, green for success
+            toast.style.backgroundColor = isError ? "#e74c3c" : "#27ae60"; 
             toast.className = "show";
             setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
         }

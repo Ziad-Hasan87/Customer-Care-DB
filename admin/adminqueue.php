@@ -11,7 +11,6 @@
 $conn = mysqli_connect('localhost', 'root', '', 'customercaredb', 3306);
 if (!$conn) { die("Connection Failed: " . mysqli_connect_error()); }
 
-// Assign employee
 if (isset($_POST['assign'])) {
     $requestid = $_POST['requestid'];
     $employeeid = $_POST['selected_employeeid'] ?? null;
@@ -22,7 +21,6 @@ if (isset($_POST['assign'])) {
     }
 }
 
-// Assign service (only ongoing)
 if (isset($_POST['assignservice'])) {
     $requestid = $_POST['requestid'];
     $serviceid = $_POST['selected_serviceid'] ?? null;
@@ -33,7 +31,6 @@ if (isset($_POST['assignservice'])) {
     }
 }
 
-// Add description
 if (isset($_POST['adddescription'])) {
     $requestid = $_POST['requestid'];
     $description = $_POST['description'] ?? '';
@@ -44,7 +41,6 @@ if (isset($_POST['adddescription'])) {
     }
 }
 
-// Change status
 $statuses = ['waiting'=>'Waiting','ongoing'=>'Ongoing','complete'=>'Complete','followingup'=>'Following Up'];
 if (isset($_POST['changestatus'])) {
     $requestid = $_POST['requestid'];
@@ -55,7 +51,6 @@ if (isset($_POST['changestatus'])) {
     }
 }
 
-// Function to render tables
 function renderTable($conn, $status, $label, $statuses, $allowServiceAssign=false){
     echo "<h1 class='headings'>$label Requests</h1>
     <table>
@@ -77,7 +72,6 @@ function renderTable($conn, $status, $label, $statuses, $allowServiceAssign=fals
             echo "<td>".htmlspecialchars($row['requestid'])."</td>";
             echo "<td>".htmlspecialchars($row['customerid'])."</td>";
 
-            // Employee assignment
             if(is_null($row['employeeid'])){
                 echo "<td><form method='post' style='display:flex;gap:8px;margin:0;'>
                     <input type='hidden' name='requestid' value='".htmlspecialchars($row['requestid'])."'>
@@ -94,7 +88,6 @@ function renderTable($conn, $status, $label, $statuses, $allowServiceAssign=fals
             echo "<td>".htmlspecialchars($row['requestdate'])."</td>";
             echo "<td>".htmlspecialchars($row['requesttype'])."</td>";
 
-            // Service assignment / display
             if($allowServiceAssign){
                 if(is_null($row['serviceid'])){
                     echo "<td><form method='post' style='display:flex;gap:8px;margin:0;'>
@@ -108,7 +101,6 @@ function renderTable($conn, $status, $label, $statuses, $allowServiceAssign=fals
                     } else echo "<option disabled>No services found</option>";
                     echo "</select><button type='submit' name='assignservice'>Assign</button></form></td>";
                 } else {
-                    // Fetch service name
                     $svcRes = mysqli_query($conn,"SELECT name FROM service WHERE serviceid=".intval($row['serviceid']));
                     $svcName = ($svcRes && mysqli_num_rows($svcRes)>0)? mysqli_fetch_assoc($svcRes)['name'] : "N/A";
                     echo "<td>".htmlspecialchars($row['serviceid']).". ".htmlspecialchars($svcName)."</td>";
@@ -121,7 +113,6 @@ function renderTable($conn, $status, $label, $statuses, $allowServiceAssign=fals
                 } else echo "<td>N/A</td>";
             }
 
-            // Description
             if(empty($row['description'])){
                 echo "<td><form method='post' style='margin:0;'>
                     <input type='hidden' name='requestid' value='".htmlspecialchars($row['requestid'])."'>
@@ -130,7 +121,6 @@ function renderTable($conn, $status, $label, $statuses, $allowServiceAssign=fals
                     </form></td>";
             } else echo "<td>".htmlspecialchars($row['description'])."</td>";
 
-            // Status change
             echo "<td>".htmlspecialchars($row['requeststatus']);
             echo "<form method='post' style='margin:0;'>
                 <input type='hidden' name='requestid' value='".htmlspecialchars($row['requestid'])."'>
@@ -150,9 +140,6 @@ function renderTable($conn, $status, $label, $statuses, $allowServiceAssign=fals
     echo "</tbody></table><br><br>";
 }
 
-// Render tables
-// Render Follow-up Requests table with Notes column
-// Render Follow-up Requests table with Notes column before Status
 function renderFollowupTable($conn, $statuses){
     echo "<h1 class='headings'>Follow-up Requests</h1>
     <table>
@@ -190,10 +177,8 @@ function renderFollowupTable($conn, $statuses){
 
             echo "<td>".htmlspecialchars($row['description'])."</td>";
 
-            // Follow-up notes column BEFORE Status
             echo "<td>".(!empty($row['notes']) ? htmlspecialchars($row['notes']) : "N/A")."</td>";
 
-            // Status change column
             echo "<td>".htmlspecialchars($row['requeststatus']);
             echo "<form method='post' style='margin:0;'>
                 <input type='hidden' name='requestid' value='".htmlspecialchars($row['requestid'])."'>
@@ -213,7 +198,6 @@ function renderFollowupTable($conn, $statuses){
     echo "</tbody></table><br><br>";
 }
 
-// Call function
 renderTable($conn,'waiting','Waiting',$statuses,false);
 renderTable($conn,'ongoing','Ongoing',$statuses,true);
 renderFollowupTable($conn, $statuses);

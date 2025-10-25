@@ -1,33 +1,26 @@
 <?php
 session_start();
 
-// Handle logout directly
 if (isset($_GET['logout'])) {
-    // Clear session
     session_unset();
     session_destroy();
 
-    // Clear cookies
     setcookie("customer_email", "", time() - 3600, "/");
     setcookie("customer_id", "", time() - 3600, "/");
 
-    // Redirect to login page
     header("Location: login.php");
     exit();
 }
 
-// Check if the login cookies exist
 if (!isset($_COOKIE['customer_email']) || !isset($_COOKIE['customer_id'])) {
     header("Location: login.php");
     exit();
 }
 
-// Get customer info from cookies
 $email = $_COOKIE['customer_email'];
 $customerId = $_COOKIE['customer_id'];
 $username = '';
 
-// Connect to database
 $conn = mysqli_connect('localhost', 'root', '', 'customercaredb', 3306);
 if ($conn) {
     $stmt = $conn->prepare("SELECT name FROM customer WHERE customerid = ?");
@@ -39,10 +32,8 @@ if ($conn) {
 }
 $conn->close();
 
-// Determine the current page
 $page = $_GET['page'] ?? 'profile';
 
-// Map pages to files
 $pages = [
     'profile' => 'profile.php',
     'requestToken' => 'requestToken.php',
@@ -50,7 +41,6 @@ $pages = [
     'follow_up' => 'followup.php'
 ];
 
-// Helper function to mark active nav link
 function isActive($p) {
     global $page;
     return $p === $page ? 'class="active"' : '';
@@ -86,7 +76,6 @@ function isActive($p) {
         <a href="?page=follow_up" <?= isActive('follow_up') ?>>Follow Up</a>
     </div>
     <div style="margin-left: auto;">
-        <!-- Logout link triggers logout in same page -->
         <a href="?logout=1" style="color: #f2f2f2; text-decoration: none; padding: 14px 20px;">Logout</a>
     </div>
 </nav>

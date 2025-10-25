@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Process login only if form submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
     $password = trim($_POST['password'] ?? '');
@@ -28,20 +27,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($result->num_rows === 1) {
     $user = $result->fetch_assoc();
     if ($password === $user['password']) {
-        $expiry = time() + (10 * 24 * 60 * 60); // 10 days
+        $expiry = time() + (10 * 24 * 60 * 60);
         setcookie("customer_email", $user['email'], $expiry, "/");
         setcookie("customer_id", $user['customerid'], $expiry, "/");
         $_SESSION['customer_id'] = $user['customerid'];
         $_SESSION['customer_email'] = $user['email'];
 
-        // Alert for successful login and redirect using JS
         echo "<script>
                 alert('Login successful! Welcome, {$user['email']}');
                 window.location='home.php';
               </script>";
         exit();
     } else {
-        // Print database values for debugging
         $db_email = $user['email'];
         $db_password = $user['password'];
         echo "<script>alert('Invalid password. Database values:\\nEmail: $db_email\\nPassword: $db_password');</script>";

@@ -1,5 +1,4 @@
 <?php
-// feedbackmonitor.php
 $conn = mysqli_connect('localhost', 'root', '', 'customercaredb', 3306);
 if (!$conn) { die("Connection Failed: " . mysqli_connect_error()); }
 ?>
@@ -43,8 +42,6 @@ if (!$conn) { die("Connection Failed: " . mysqli_connect_error()); }
                 echo "<td>".htmlspecialchars($row['requestid'])."</td>";
                 echo "<td>".(!empty($row['employee_name']) ? htmlspecialchars($row['employee_name']) : "N/A")."</td>";
                 echo "<td>".(!empty($row['service_name']) ? htmlspecialchars($row['service_name']) : "N/A")."</td>";
-
-                // Display rating as stars
                 if($row['rating'] !== null){
                     $rating = intval($row['rating']);
                     $stars = str_repeat('★', $rating) . str_repeat('☆', 5 - $rating);

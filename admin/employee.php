@@ -20,13 +20,11 @@
             if (!$conn) {
                 echo "<script>alert('Connection Failed.');</script>";
             } else {
-                // Basic validation
                 if (empty($employeeid) || empty($name) || empty($role) || empty($email) || empty($phone)) {
                     echo "<script>alert('Please fill in all fields');</script>";
                     die('Please fill in all fields');
                 }
 
-                // Prevent duplicate employeeid or email
                 $check = mysqli_query($conn, "SELECT * FROM employee WHERE employeeid='$employeeid' OR email='$email'");
                 if (mysqli_num_rows($check) > 0) {
                     echo "<script>alert('Employee with this ID or Email already exists');</script>";

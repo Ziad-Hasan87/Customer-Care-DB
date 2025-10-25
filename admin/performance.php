@@ -1,5 +1,4 @@
 <?php
-// performance.php
 $conn = mysqli_connect('localhost', 'root', '', 'customercaredb', 3306);
 if (!$conn) { die("Connection Failed: " . mysqli_connect_error()); }
 ?>
@@ -27,7 +26,6 @@ if (!$conn) { die("Connection Failed: " . mysqli_connect_error()); }
         </thead>
         <tbody>
         <?php
-        // Fetch data directly from the view
         $query = "SELECT * FROM employee_performance ORDER BY avg_rating DESC";
         $result = mysqli_query($conn, $query);
 
@@ -40,9 +38,8 @@ if (!$conn) { die("Connection Failed: " . mysqli_connect_error()); }
                 echo "<td>".htmlspecialchars($row['phone'])."</td>";
                 echo "<td>".htmlspecialchars($row['role'])."</td>";
 
-                // Display average rating as stars if available
                 if($row['avg_rating'] !== null){
-                    $avg = round($row['avg_rating']); // round to nearest integer
+                    $avg = round($row['avg_rating']);
                     $stars = str_repeat('★', $avg) . str_repeat('☆', 5 - $avg);
                     echo "<td>".$stars." (".number_format($row['avg_rating'],1).")</td>";
                 } else {

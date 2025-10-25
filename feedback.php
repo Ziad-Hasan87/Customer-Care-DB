@@ -5,7 +5,6 @@
     <title>Completed Orders & Feedbacks</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Optional: simple stars display */
         .stars {
             color: gold;
             font-size: 1.2em;
@@ -15,13 +14,12 @@
 <body>
     <div class="table-container">
         <?php
-            // Check if customer_id cookie exists
             if(!isset($_COOKIE['customer_id'])){
                 echo "<p>Customer not logged in.</p>";
                 exit;
             }
 
-            $customer_id = intval($_COOKIE['customer_id']); // Sanitize input
+            $customer_id = intval($_COOKIE['customer_id']); 
 
             $conn = mysqli_connect('localhost','root','','customercaredb',3306);
             if(!$conn){
@@ -29,8 +27,6 @@
             }
         ?>
 
-        <!-- COMPLETED ORDERS TABLE -->
-        <!-- COMPLETED ORDERS TABLE -->
 <h1 class="headings">Completed Orders</h1>
 <table>
     <thead>
@@ -63,23 +59,19 @@
                     echo "<td>".htmlspecialchars($row['description'])."</td>";
                     echo "<td>".htmlspecialchars($row['requeststatus'])."</td>";
 
-                    // Check if feedback exists
                     $feedback_exists = false;
                     $fb_check = mysqli_query($conn, "SELECT feedbackid FROM feedback WHERE customerid = $customer_id AND requestid = $requestid LIMIT 1");
                     if($fb_check && mysqli_num_rows($fb_check) > 0){
                         $feedback_exists = true;
                     }
 
-                    // Action buttons
                     echo "<td style='display:flex; gap:5px;'>";
 
-                    // Always allow followup request
                     echo "<form action='userfollowup.php' method='get' style='margin:0;'>
                             <input type='hidden' name='requestid' value='{$requestid}'>
                             <button type='submit'>Request Followup</button>
                           </form>";
 
-                    // Only show Feedback button if not already submitted
                     if(!$feedback_exists){
                         echo "<form action='userfeedback.php' method='get' style='margin:0;'>
                                 <input type='hidden' name='requestid' value='{$requestid}'>
@@ -99,7 +91,6 @@
 
         <br><br>
 
-        <!-- USER FEEDBACKS TABLE -->
         <h1 class="headings">My Feedbacks</h1>
         <table>
             <thead>
@@ -128,7 +119,6 @@
                             echo "<td>".(!is_null($fb['serviceid']) ? htmlspecialchars($fb['serviceid']) : "N/A")."</td>";
                             echo "<td>".(!is_null($fb['employeeid']) ? htmlspecialchars($fb['employeeid']) : "N/A")."</td>";
                             
-                            // Show rating as stars
                             $rating = intval($fb['rating']);
                             $stars = str_repeat("★", $rating) . str_repeat("☆", 5 - $rating);
                             echo "<td class='stars'>{$stars}</td>";

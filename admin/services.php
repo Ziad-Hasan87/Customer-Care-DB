@@ -19,13 +19,11 @@
             </thead>
             <tbody>
                 <?php
-                    // Connect to the database
                     $conn = mysqli_connect('localhost', 'root', '', 'customercaredb', 3306);
                     if (!$conn) {
                         die("<tr><td colspan='4'>Connection Failed: " . mysqli_connect_error() . "</td></tr>");
                     }
 
-                    // Fetch all services
                     $stmt = "SELECT * FROM service ORDER BY serviceid ASC";
                     $result = mysqli_query($conn, $stmt);
 

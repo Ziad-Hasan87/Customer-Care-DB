@@ -8,7 +8,6 @@
 </head>
 <body>
     <?php
-        // Get customer ID from cookie
         if(!isset($_COOKIE['customer_id'])) {
             echo "<script>alert('Customer not logged in.');</script>";
             exit('Customer not logged in.');

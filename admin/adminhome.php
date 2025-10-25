@@ -1,10 +1,7 @@
 <?php
-// adminhome.php
 
-// Determine which page to load
-$page = $_GET['page'] ?? 'adminqueue'; // default to Queue
+$page = $_GET['page'] ?? 'adminqueue';
 
-// Map page keys to actual files
 $pages = [
     'adminqueue' => 'adminqueue.php',
     'services' => 'services.php',
@@ -14,7 +11,6 @@ $pages = [
     'feedback' => 'feedbackmonitor.php'
 ];
 
-// Helper function to mark active nav link
 function isActive($p) {
     global $page;
     return $p === $page ? 'class="active"' : '';
@@ -42,7 +38,7 @@ function isActive($p) {
 </head>
 <body>
 
-<!-- Navbar -->
+
 <nav>
     <a href="?page=adminqueue" <?= isActive('adminqueue') ?>>Queue</a>
     <a href="?page=services" <?= isActive('services') ?>>Services</a>

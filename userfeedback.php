@@ -8,7 +8,6 @@ if ($requestid <= 0) {
     die("Invalid request ID.");
 }
 
-// Fetch service request info
 $stmt = "SELECT * FROM servicerequest WHERE requestid=$requestid";
 $result = mysqli_query($conn, $stmt);
 if (!$result || mysqli_num_rows($result) == 0) {
@@ -17,7 +16,6 @@ if (!$result || mysqli_num_rows($result) == 0) {
 
 $request = mysqli_fetch_assoc($result);
 
-// Handle feedback submission
 if (isset($_POST['submit_feedback'])) {
     $rating = intval($_POST['rating']);
     $feedback_desc = mysqli_real_escape_string($conn, $_POST['description']);

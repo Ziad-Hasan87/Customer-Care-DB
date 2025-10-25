@@ -3,7 +3,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Check if login cookies exist
 if (!isset($_COOKIE['customer_email']) || !isset($_COOKIE['customer_id'])) {
     header("Location: login.php");
     exit();
